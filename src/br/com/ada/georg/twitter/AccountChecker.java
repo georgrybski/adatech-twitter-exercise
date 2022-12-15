@@ -9,7 +9,7 @@ public class AccountChecker {
         this.exists = exists;
     }
 
-    public static AccountChecker AccountExists(String username, Object[] list) {
+    public static AccountChecker accountExists(String username, Object[] list) {
         boolean usernamesAreEqual;
         boolean accountIsNull;
 
@@ -25,7 +25,6 @@ public class AccountChecker {
         }
         return null;
     }
-    
 
     public Account getAccount() {
         return account;

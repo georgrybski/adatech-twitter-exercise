@@ -33,6 +33,36 @@ public class Account {
         accountList[accountCount++] = new Account(username, password, currentDate,  new User(name, email, birthDate));
     }
 
+    @Override
+    public String toString() {
+        return "Account{" +
+                "username='" + username + '\'' +
+                ", password='" + password + '\'' +
+                user.toString() +
+                ", creationDate='" + creationDate + '\'' +
+                ", tweetCount=" + tweetCount +
+                ", followerCount=" + followerCount +
+                ", followCount=" + followCount +
+                '}';
+    }
+
+    public static void printAllAccounts(Object[] list) {
+        for (Object account : list) {
+            if (account != null) {
+                System.out.println(((Account) account).toString());
+            }
+        }
+    }
+
+    public static void follow(Account follower, Account followed) {
+        // Add followed to follower's followed list
+        follower.followedList[follower.followCount++] = followed;
+        // Add follower to followed's follower list
+        followed.followerList[followed.followerCount++] = follower;
+    }
+
+
+
     public static Object[] getAccountList() {
         return accountList;
     }
@@ -79,5 +109,53 @@ public class Account {
 
     public int getFollowCount() {
         return followCount;
+    }
+
+    public static void setAccountList(Object[] accountList) {
+        Account.accountList = accountList;
+    }
+
+    public static void setAccountCount(int accountCount) {
+        Account.accountCount = accountCount;
+    }
+
+    public void setUsername(String username) {
+        this.username = username;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setUser(User user) {
+        this.user = user;
+    }
+
+    public void setCreationDate(String creationDate) {
+        this.creationDate = creationDate;
+    }
+
+    public void setTweets(Object[] tweets) {
+        this.tweets = tweets;
+    }
+
+    public void setTweetCount(int tweetCount) {
+        this.tweetCount = tweetCount;
+    }
+
+    public void setFollowedList(Object[] followedList) {
+        this.followedList = followedList;
+    }
+
+    public void setFollowerCount(int followerCount) {
+        this.followerCount = followerCount;
+    }
+
+    public void setFollowerList(Object[] followerList) {
+        this.followerList = followerList;
+    }
+
+    public void setFollowCount(int followCount) {
+        this.followCount = followCount;
     }
 }
