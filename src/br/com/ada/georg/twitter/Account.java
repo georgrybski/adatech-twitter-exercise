@@ -33,4 +33,51 @@ public class Account {
         accountList[accountCount++] = new Account(username, password, currentDate,  new User(name, email, birthDate));
     }
 
+    public static Object[] getAccountList() {
+        return accountList;
+    }
+
+    public static int getAccountCount() {
+        return accountCount;
+    }
+
+    public String getUsername() {
+        return username;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public User getUser() {
+        return user;
+    }
+
+    public String getCreationDate() {
+        return creationDate;
+    }
+
+    public Object[] getTweets() {
+        return tweets;
+    }
+
+    public int getTweetCount() {
+        return tweetCount;
+    }
+
+    public Object[] getFollowedList() {
+        return followedList;
+    }
+
+    public int getFollowerCount() {
+        return followerCount;
+    }
+
+    public Object[] getFollowerList() {
+        return followerList;
+    }
+
+    public int getFollowCount() {
+        return followCount;
+    }
 }
