@@ -18,18 +18,19 @@ public class Account {
     private Object[] followerList = new Object[1];
     private int followCount = 0;
 
-    private Account(String username, String password, User user, String creationDate) {
+    private Account(String username, String password, String creationDate ,User user) {
         this.username = username;
         this.password = password;
         this.user = user;
         this.creationDate = creationDate;
     }
 
-//        TODO add proper date formatter, array expansion tool and User class.
-//    public static void registerAccount(String username, String password, String name, String birthDate) {
-//        accountList[accountCount++] = new Account(username, password, date,  new User(name, email, birthDate));
-//    }
-
-    
+    public static void registerAccount(String username, String password, String name, String email, String birthDate, String currentDate) {
+        var isListFull = accountCount == accountList.length-1;
+        if(isListFull) {
+            accountList = ArrayTools.returnExpandedArray(accountList);
+        }
+        accountList[accountCount++] = new Account(username, password, currentDate,  new User(name, email, birthDate));
+    }
 
 }
