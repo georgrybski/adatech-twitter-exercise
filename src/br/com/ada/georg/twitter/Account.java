@@ -54,24 +54,52 @@ public class Account {
         }
     }
 
-    public static void follow(Account follower, Account followed) {
-        // Check if Already following
+    public static void follow(Account follower, String  followedUsername) {
 
-        //Check if arrays are full, and expand them if necessary
-        var isFollowedListFull = followed.followerCount == followed.followerList.length-1;
+        // Check if an account with followedUsername exists
+        AccountChecker followedAccountCheck;
+        followedAccountCheck = AccountChecker.accountExists(followedUsername, Account.accountList);
+        if(!followedAccountCheck.exists()){
+            return;
+        }
+
+        // Check if follower is already following the account that has followedUsername
+        AccountChecker followedInFollowList = AccountChecker.accountExists(followedUsername, follower.followedList);
+        if (followedInFollowList.exists()){
+            System.out.println("You are already following this account.");
+            return;
+        }
+
+        //Check if the involved arrays are full, and expand them if necessary
+        var isFollowedListFull = followedInFollowList.getAccount().followerCount == followedInFollowList.getAccount().followerList.length-1;
         var isFollowerListFull = follower.followCount == follower.followedList.length -1;
 
+        // Expand follower account's followed list
         if (isFollowerListFull) {
             follower.followedList = ArrayTools.returnExpandedArray(follower.followedList);
         }
+
+        // Expand followed  account's follower list
         if (isFollowedListFull) {
-            followed.followerList = ArrayTools.returnExpandedArray(followed.followerList);
+            followedInFollowList.getAccount().followerList = ArrayTools.returnExpandedArray(followedInFollowList.getAccount().followerList);
         }
 
         // Add followed to follower's followed list
-        follower.followedList[follower.followCount++] = followed;
+        follower.followedList[follower.followCount++] = followedAccountCheck.getAccount();
+
         // Add follower to followed's follower list
-        followed.followerList[followed.followerCount++] = follower;
+        followedAccountCheck.getAccount().followerList[followedAccountCheck.getAccount().followerCount++] = follower;
+    }
+
+    public static AccountChecker logIn (String username, String password){
+        var accountCheck = AccountChecker.accountExists(username, Account.accountList);
+        if(accountCheck.exists()) {
+            if (accountCheck.getAccount().password.equals(password)){
+                return new AccountChecker(accountCheck.getAccount(), true);
+            }
+        }
+        System.out.println("Username and/or password is incorrect");
+        return new AccountChecker(null, false);
     }
 
     public static Object[] getAccountList() {

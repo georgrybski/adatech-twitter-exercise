@@ -4,7 +4,7 @@ public class AccountChecker {
     private Account account;
     private boolean exists;
 
-    private AccountChecker(Account account, boolean exists) {
+    public AccountChecker(Account account, boolean exists) {
         this.account = account;
         this.exists = exists;
     }
@@ -30,7 +30,7 @@ public class AccountChecker {
         return account;
     }
 
-    public boolean accountExists() {
+    public boolean exists() {
         return exists;
     }
 }
