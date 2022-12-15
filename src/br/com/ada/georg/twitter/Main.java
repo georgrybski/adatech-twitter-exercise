@@ -9,26 +9,36 @@ public class Main {
 
             switch (Input.getInt("0-Exit 1-Create account 2-Log In 3-Log out 4- print all account info, 5-follow 6-printFollowed",
                     0,4)) {
+
                 case(0):
                     run = false;
                     break;
+
                 case(1):
                     Input.registerAccount();
                     break;
-                case(2):
 
+                case(2):
+                    loggedAccount = Input.logIn(loggedAccount);
                     break;
+
                 case(3):
-                    Account.printAllAccounts(Account.getAccountList());
+                    System.out.println(loggedAccount == null);
+                    Account.logOut(loggedAccount);
+                    loggedAccount = loggedAccount;
                     break;
+
                 case(4):
                     Account.printAllAccounts(Account.getAccountList());
                     break;
+
                 case(5):
                     if(loggedAccount!=null){
 
+                        break;
                     }
                     break;
+
                 case(6):
                     if(loggedAccount!=null){
                         Account.printAllAccounts(loggedAccount.getFollowedList());

@@ -98,8 +98,16 @@ public class Account {
                 return new AccountChecker(accountCheck.getAccount(), true);
             }
         }
-        System.out.println("Username and/or password is incorrect");
         return new AccountChecker(null, false);
+    }
+
+    public static Account logOut(Account loggedAccount) {
+        if (loggedAccount!=null){
+            System.out.println("You have successfully logged out");
+        } else {
+            System.out.println("You are already logged out");
+        }
+        return null;
     }
 
     public static Object[] getAccountList() {

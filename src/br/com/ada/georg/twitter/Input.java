@@ -4,6 +4,40 @@ import java.util.Scanner;
 
 public class Input {
 
+    public static Account logIn(Account loggedAccount) {
+        if (loggedAccount == null) {
+
+            var username = getString("Insert your username");
+            var password = getString("Insert your password");
+            AccountChecker logInCheck = Account.logIn(username, password);
+            if (logInCheck.exists()) {
+                System.out.println("You have successfully logged in as " + logInCheck.getAccount().getUsername());
+                return logInCheck.getAccount();
+            } else {
+                switch (getInt("Username and/or password incorrect, press 0 to go back to the menu or 1 to try again", 0, 1)) {
+                    default:
+                    case 0:
+                        return null;
+                    case 1:
+                        return logIn(loggedAccount);
+                }
+            }
+        }
+        else {
+            System.out.println("You are already logged in!");
+            switch (getInt("Press 1 to log or 0 to go back to the menu", 0,1)) {
+                case 0:
+                    return loggedAccount;
+                case 1:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+//    private static Account logIn()
+
+
     private static Object get(String expectedInputType) {
         Scanner scanner = new Scanner(System.in);
         Object input;
