@@ -147,7 +147,7 @@ public class Input {
         boolean usernameLengthValid = (username.length() >= 4 && username.length() <= 15);
 
         // Regex to check if username contains only Letters A-Z, numbers 9-0 and underscores.
-        boolean usernameCharactersValid = (username.matches("^[A-Z0-9_]+$"));
+        boolean usernameCharactersValid = (username.matches("^[a-zA-Z0-9_]+$"));
         if(usernameLengthValid && usernameCharactersValid) {
             return true;
         }
