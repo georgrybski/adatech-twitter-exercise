@@ -5,7 +5,22 @@ public class Tweet {
     private static int tweetCount = 0;
 
     private String tweet;
-//    TODO add proper date structure
+
+    private Tweet(String tweet, String postDate, Account author) {
+        this.tweet = tweet;
+        this.postDate = postDate;
+        this.author = author;
+    }
+
+    public static void postTweet(String tweet, String postDate, Account author) {
+        var isTweetListFull = tweetCount == tweetList.length-1;
+        if(isTweetListFull) {
+            tweetList = ArrayTools.returnExpandedArray(tweetList);
+        }
+        tweetList[tweetCount++] = new Tweet(tweet, postDate, author);
+    }
+
+    //    TODO add proper date structure
     private String postDate;
     private Account author;
 
