@@ -41,6 +41,10 @@ public class Input {
             return;
         }
         var usernameToFollow = getString("Insert the username you would like to follow");
+        if (usernameToFollow.equalsIgnoreCase(loggedAccount.getUsername())){
+            System.out.println("You can't follow yourself");
+            return;
+        }
         Account.follow(loggedAccount, usernameToFollow);
         System.out.println("You are now following \"" + usernameToFollow + "\"");
 }
