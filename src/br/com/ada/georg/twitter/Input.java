@@ -135,17 +135,23 @@ public class Input {
     }
 
     public static String getFullName() {
-        return formatFullName(getString("Insert your full name"));
+        return formatFullName(getString("Insert the name you would like to use"));
     }
 
-    public static void registerAccount() {
+    public static void registerAccount(Account loggedAccount) {
+        if (loggedAccount == null) {
+            String username = getUsername();
+            String password = getString("Insert your desired password");
+            String name = getFullName();
+            String email = getString("Insert your email");
+            String birthDate = getString("Insert your birthdate");
 
-        String username = getUsername();
-        String password = getString("Insert your desired password");
-        String name = getFullName();
-        String email = getString("Insert your email");
-        String birthDate = getString("Insert your birthdate");
+            Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
+        }
+        else {
+            System.out.println("You have to log out before attempting to create an account");
+        }
 
-        Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
+
     }
 }

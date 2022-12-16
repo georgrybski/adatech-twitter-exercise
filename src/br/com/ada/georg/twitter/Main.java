@@ -18,7 +18,7 @@ public class Main {
                 // TODO create a check to avoid being able to create an account while logged in
                 // Create account
                 case(1):
-                    Input.registerAccount();
+                    Input.registerAccount(loggedAccount);
                     break;
 
                 // Log in
