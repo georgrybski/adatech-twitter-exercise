@@ -106,7 +106,6 @@ public class Input {
         else {
             return username;
         }
-
     }
 
     public static String formatFullName(String fullName) {
@@ -127,8 +126,6 @@ public class Input {
         return formatFullName(getString("Insert your full name"));
     }
 
-
-
     public static void registerAccount() {
 
         String username = getUsername();
@@ -140,5 +137,4 @@ public class Input {
 
         Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
     }
-
 }

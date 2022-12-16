@@ -44,14 +44,7 @@ public class Main {
                         Account.printAllAccounts(loggedAccount.getFollowedList());
                     }
                     break;
-
             }
-
-
         }
-
-        Input.registerAccount();
-
-
     }
 }
