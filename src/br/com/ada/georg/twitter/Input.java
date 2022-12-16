@@ -4,6 +4,40 @@ import java.util.Scanner;
 
 public class Input {
 
+    public static Account logIn(Account loggedAccount) {
+        if (loggedAccount == null) {
+
+            var username = getString("Insert your username");
+            var password = getString("Insert your password");
+            AccountChecker logInCheck = Account.logIn(username, password);
+            if (logInCheck.exists()) {
+                System.out.println("You have successfully logged in as " + logInCheck.getAccount().getUsername());
+                return logInCheck.getAccount();
+            } else {
+                switch (getInt("Username and/or password incorrect, press 0 to go back to the menu or 1 to try again", 0, 1)) {
+                    default:
+                    case 0:
+                        return null;
+                    case 1:
+                        return logIn(loggedAccount);
+                }
+            }
+        }
+        else {
+            System.out.println("You are already logged in!");
+            switch (getInt("Press 1 to log or 0 to go back to the menu", 0,1)) {
+                case 0:
+                    return loggedAccount;
+                case 1:
+                    return null;
+            }
+        }
+        return null;
+    }
+
+//    private static Account logIn()
+
+
     private static Object get(String expectedInputType) {
         Scanner scanner = new Scanner(System.in);
         Object input;
@@ -61,12 +95,17 @@ public class Input {
         }
     }
 
-    public static void getUsername() {
+    public static String getUsername() {
         var username = (String) getString("Insert your desired username");
-//        TODO add integration with AccountCheck to see
-//              if a account with such username exists
-//        AccountCheck usernameFree = Account.AccountExists(username, Account.accountList)
 
+        AccountChecker usernameFree = AccountChecker.accountExists(username, Account.getAccountList());
+        if (usernameFree.exists()) {
+            System.out.println("\'" + usernameFree.getAccount().getUsername() + "\' is already taken");
+            return getUsername();
+        }
+        else {
+            return username;
+        }
     }
 
     public static String formatFullName(String fullName) {
@@ -82,12 +121,20 @@ public class Input {
         String formattedName = name.substring(0,1).toUpperCase();
         return formattedName + name.substring(1).toLowerCase();
     }
+
     public static String getFullName() {
         return formatFullName(getString("Insert your full name"));
     }
 
-//    TODO add registerAccount method to receive all input
-//        necessary and run Account.registerAccount method
+    public static void registerAccount() {
+
+        String username = getUsername();
+        String password = getString("Insert your desired password");
+        String name = getFullName();
+        String email = getString("Insert your email");
+        String birthDate = getString("Insert your birthdate");
 
 
+        Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
+    }
 }

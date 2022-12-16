@@ -11,6 +11,15 @@ public class User {
         this.birthDate = birthDate;
     }
 
+    @Override
+    public String toString() {
+        return "User{" +
+                "name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", birthDate='" + birthDate + '\'' +
+                '}';
+    }
+
     public String getName() {
         return name;
     }
