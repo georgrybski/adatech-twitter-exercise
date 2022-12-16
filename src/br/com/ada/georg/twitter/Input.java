@@ -116,7 +116,7 @@ public class Input {
         }
         AccountChecker usernameFree = AccountChecker.accountExists(username, Account.getAccountList());
         if (usernameFree.exists()) {
-            System.out.println("\'" + usernameFree.getAccount().getUsername() + "\' is already taken");
+            System.out.println("That username is already taken");
             return getUsername();
         }
         else {

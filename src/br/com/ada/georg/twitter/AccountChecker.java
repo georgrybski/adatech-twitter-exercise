@@ -18,7 +18,7 @@ public class AccountChecker {
             if (accountIsNull) {
                 return new AccountChecker(null, false);
             }
-            usernamesAreEqual = ((Account) list[i]).getUsername().equals(username);
+            usernamesAreEqual = ((Account) list[i]).getUsername().equalsIgnoreCase(username);
             if (usernamesAreEqual){
                 return new AccountChecker((Account) list[i], true);
             }
