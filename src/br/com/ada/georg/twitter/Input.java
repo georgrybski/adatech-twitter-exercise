@@ -109,7 +109,11 @@ public class Input {
 
     public static String getUsername() {
         var username = (String) getString("Insert your desired username");
-
+        if (!isUsernameValid(username)){
+            System.out.println("Usernames must have between 4 and 15 characters and " +
+                               "contain only letters A-Z, numbers 0-9 or underscores");
+            return getUsername();
+        }
         AccountChecker usernameFree = AccountChecker.accountExists(username, Account.getAccountList());
         if (usernameFree.exists()) {
             System.out.println("\'" + usernameFree.getAccount().getUsername() + "\' is already taken");
@@ -135,7 +139,21 @@ public class Input {
     }
 
     public static String getFullName() {
-        return formatFullName(getString("Insert the name you would like to use"));
+        return formatFullName(getString("Insert the name your name"));
+    }
+
+    public static boolean isUsernameValid(String username) {
+        // Check if username is within Twitter's accepted size range.
+        boolean usernameLengthValid = (username.length() >= 4 && username.length() <= 15);
+
+        // Regex to check if username contains only Letters A-Z, numbers 9-0 and underscores.
+        boolean usernameCharactersValid = (username.matches("^[A-Z0-9_]+$"));
+        if(usernameLengthValid && usernameCharactersValid) {
+            return true;
+        }
+        else {
+            return false;
+        }
     }
 
     public static void registerAccount(Account loggedAccount) {

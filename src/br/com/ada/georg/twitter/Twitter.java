@@ -5,7 +5,6 @@ public class Twitter {
     //TODO
     private static void printFormattedTweet(Tweet tweet) {
 
-
     }
 
     // Experimental
