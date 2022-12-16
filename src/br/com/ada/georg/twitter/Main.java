@@ -36,7 +36,6 @@ public class Main {
                     Account.printAllAccounts(Account.getAccountList());
                     break;
 
-                // TODO fix follow
                 // Follow someone
                 case(5):
                     System.out.println(loggedAccount);
@@ -53,7 +52,7 @@ public class Main {
                 // Print followed
                 case(7):
                     if(loggedAccount!=null){
-                        Account.printAllAccounts(loggedAccount.getFollowedList());
+                        Account.printAllAccounts(loggedAccount.getFollowerList());
                     }
                     break;
             }
