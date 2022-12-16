@@ -35,7 +35,19 @@ public class Input {
         return null;
     }
 
-//    private static Account logIn()
+    public static void follow (Account loggedAccount) {
+        if (loggedAccount == null) {
+            System.out.println("You have to be logged in to follow someone.");
+            return;
+        }
+        var usernameToFollow = getString("Insert the username you would like to follow");
+        if (usernameToFollow.equalsIgnoreCase(loggedAccount.getUsername())){
+            System.out.println("You can't follow yourself");
+            return;
+        }
+        Account.follow(loggedAccount, usernameToFollow);
+        System.out.println("You are now following \"" + usernameToFollow + "\"");
+}
 
 
     private static Object get(String expectedInputType) {
@@ -133,7 +145,6 @@ public class Input {
         String name = getFullName();
         String email = getString("Insert your email");
         String birthDate = getString("Insert your birthdate");
-
 
         Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
     }

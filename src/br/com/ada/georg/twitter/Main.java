@@ -7,41 +7,52 @@ public class Main {
 
         while(run){
 
-            switch (Input.getInt("0-Exit 1-Create account 2-Log In 3-Log out 4- print all account info, 5-follow 6-printFollowed",
-                    0,4)) {
+            switch (Input.getInt("0-Exit 1-Create account 2-Log In 3-Log out 4- print all account info, 5-follow 6-printFollowed 7-printFollowing",
+                    0,9)) {
 
+                // Exit application
                 case(0):
                     run = false;
                     break;
 
+                // TODO create a check to avoid being able to create an account while logged in
+                // Create account
                 case(1):
                     Input.registerAccount();
                     break;
 
+                // Log in
                 case(2):
                     loggedAccount = Input.logIn(loggedAccount);
                     break;
 
+                // Log out
                 case(3):
-                    System.out.println(loggedAccount == null);
-                    Account.logOut(loggedAccount);
-                    loggedAccount = loggedAccount;
+                    loggedAccount = Account.logOut(loggedAccount);
                     break;
 
+                // Print all registered accounts
                 case(4):
                     Account.printAllAccounts(Account.getAccountList());
                     break;
 
+                // Follow someone
                 case(5):
-                    if(loggedAccount!=null){
-
+                    System.out.println(loggedAccount);
+                    Input.follow(loggedAccount);
                         break;
-                    }
-                    break;
 
+                // Print following
                 case(6):
                     if(loggedAccount!=null){
                         Account.printAllAccounts(loggedAccount.getFollowedList());
+                    }
+                    break;
+
+                // Print followed
+                case(7):
+                    if(loggedAccount!=null){
+                        Account.printAllAccounts(loggedAccount.getFollowerList());
                     }
                     break;
             }

@@ -60,6 +60,7 @@ public class Account {
         AccountChecker followedAccountCheck;
         followedAccountCheck = AccountChecker.accountExists(followedUsername, Account.accountList);
         if(!followedAccountCheck.exists()){
+            System.out.println("There is no account with the username \"" + followedUsername + "\"");
             return;
         }
 
@@ -71,7 +72,7 @@ public class Account {
         }
 
         //Check if the involved arrays are full, and expand them if necessary
-        var isFollowedListFull = followedInFollowList.getAccount().followerCount == followedInFollowList.getAccount().followerList.length-1;
+        var isFollowedListFull = followedAccountCheck.getAccount().followerCount == followedAccountCheck.getAccount().followerList.length-1;
         var isFollowerListFull = follower.followCount == follower.followedList.length -1;
 
         // Expand follower account's followed list
@@ -81,7 +82,7 @@ public class Account {
 
         // Expand followed  account's follower list
         if (isFollowedListFull) {
-            followedInFollowList.getAccount().followerList = ArrayTools.returnExpandedArray(followedInFollowList.getAccount().followerList);
+            followedAccountCheck.getAccount().followerList = ArrayTools.returnExpandedArray(followedAccountCheck.getAccount().followerList);
         }
 
         // Add followed to follower's followed list
