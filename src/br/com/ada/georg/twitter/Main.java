@@ -10,7 +10,6 @@ public class Main {
 //        Account.registerAccount();
 
         while (run) {
-
             if (loggedAccount != null) {
                 boolean isAdmin = loggedAccount.getUsername().equalsIgnoreCase("admin");
                 if (isAdmin) {
@@ -23,12 +22,9 @@ public class Main {
                         // Create account
                         case 1:
                             Input.registerAccount(loggedAccount);
-                            //
-                            break;
-                        // View account info
-                        case 2:
                             break;
                         case 3:
+                            Twitter.printAllProfiles(loggedAccount);
                             break;
                         case 4:
                             break;

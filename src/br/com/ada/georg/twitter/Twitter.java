@@ -13,9 +13,37 @@ public class Twitter {
     }
 
     //TODO
-    public static void printFormattedProfile() {
+    private static void printFormattedProfile(Account account, Account loggedAccount) {
+        int lineLength = 70;
+        printFrameLine(lineLength, "+", "-");
+        printMultipurposeTweetLine(account.getUser().getName(), lineLength);
+        printMultipurposeTweetLine(account.getHandle(), lineLength);
+        printFrameLine(lineLength, "|"," ");
+        printMultipurposeTweetLine("Joined " + account.getCreationDate(), lineLength);
+        printFrameLine(lineLength, "|"," ");
+        printMultipurposeTweetLine(returnFollowerInfo(account), lineLength);
+        if (loggedAccount.getUsername().equalsIgnoreCase("admin")) {
 
+        }
+        printFrameLine(lineLength, "+", "-");
     }
+
+    private static String returnFollowerInfo(Account account) {
+        return "Following " + account.getFollowCount() +
+                " ".repeat(3) + account.getFollowerCount() + " Followers";
+    }
+
+    public static void printAllProfiles(Account loggedAccount) {
+        for (Object account:Account.getAccountList()) {
+            if (account == null) {
+                return;
+            }
+            if (!((Account)account).getUsername().equalsIgnoreCase("admin")) {
+                printFormattedProfile((Account) account, loggedAccount);
+            }
+        }
+    }
+
 
     //TODO
     public static void printWelcomeMenu() {
