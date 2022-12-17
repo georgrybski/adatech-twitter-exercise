@@ -24,22 +24,27 @@ public class Twitter {
     }
 
     private static void printFormattedTweetString(Tweet tweet, int lineLength) {
-        String[] tweetStringArray = tweet.getTweet().trim().split(" ");
+        String tweetStringArray[] = tweet.getTweet().trim().split(" "), word;
         var tweetLine ="|  ";
-        for (String word: tweetStringArray) {
-            boolean wordFitsOnLine = (tweetLine.length() + word.length()) < lineLength;
+        for (int i = 0; i < tweetStringArray.length; i++) {
+            word = tweetStringArray[i];
+            boolean wordFitsOnLine = (tweetLine.length() + word.length() +3) < lineLength;
             if (wordFitsOnLine) {
                 tweetLine += " " + word;
             }
             else {
-                if(tweetLine.length() != lineLength) {
-                    tweetLine += " ".repeat(lineLength - tweetLine.length() -1);
-                }
-                tweetLine += "  |";
+                tweetLine += " ".repeat(lineLength - tweetLine.length()+1) + "|";
                 System.out.println(tweetLine);
-                tweetLine ="|  ";
+                tweetLine = "|  ";
+            }
+            if(i == tweetStringArray.length -1){
+                tweetLine += " ".repeat(lineLength- tweetLine.length()+1) + "|";
+                System.out.println(tweetLine);
+                return;
             }
         }
+        tweetLine += " ".repeat(lineLength - tweetLine.length()+1);
+        System.out.println(tweetLine);
     }
 
     // Experimental
@@ -61,7 +66,7 @@ public class Twitter {
                 return;
             }
             else {
-                printFormattedTweet((Tweet) tweet,70);
+                printFormattedTweet((Tweet) tweet,80);
             }
         }
     }
