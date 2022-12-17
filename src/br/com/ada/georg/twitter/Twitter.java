@@ -1,6 +1,6 @@
 package br.com.ada.georg.twitter;
 public class Twitter {
-    
+
     private static void printFormattedTweet(Tweet tweet, int lineLength) {
         printFrameLine(lineLength, "+", "-");
         printFormattedTweetInfo(tweet, lineLength);
@@ -9,7 +9,6 @@ public class Twitter {
         printFrameLine(lineLength, "|"," ");
         printFormattedTweetMetrics(tweet, lineLength);
         printFrameLine(lineLength, "+", "-");
-
     }
 
     private static void printFormattedTweetInfo(Tweet tweet, int lineLength) {
