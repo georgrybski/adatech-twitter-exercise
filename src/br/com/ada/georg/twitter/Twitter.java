@@ -31,6 +31,27 @@ public class Twitter {
         }
     }
 
+    public static void printTweetsByAccount(Account loggedAccount) {
+        if(loggedAccount == null) {
+            System.out.println("You need to be logged in to check tweets");
+        }
+
+        for (Object tweet: loggedAccount.getTweets()) {
+            if(tweet == null) {
+                return;
+            }
+            System.out.println(((Tweet) tweet).toString());
+        }
+    }
+
+    public static void printAllTweets() {
+        for (Object tweet: Tweet.getTweetList()) {
+            if(tweet == null) {
+                return;
+            }
+            System.out.println(((Tweet)tweet).toString());
+        }
+    }
 //    private static void pr
     private static void viewProfile(Account account) {
 
