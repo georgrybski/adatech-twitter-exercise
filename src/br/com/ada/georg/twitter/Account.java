@@ -46,7 +46,10 @@ public class Account {
                 '}';
     }
 
-    public static void printAllAccounts(Object[] list) {
+    public static void printAllAccounts(Account loggedAccount, Object[] list) {
+        if(loggedAccount == null){
+            return;
+        }
         for (Object account : list) {
             if (account != null) {
                 System.out.println(((Account) account).toString());

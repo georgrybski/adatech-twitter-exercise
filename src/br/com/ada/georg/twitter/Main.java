@@ -14,8 +14,7 @@ public class Main {
                 case (0):
                     run = false;
                     break;
-
-                // TODO create a check to avoid being able to create an account while logged in
+                    
                 // Create account
                 case (1):
                     Input.registerAccount(loggedAccount);
@@ -33,7 +32,7 @@ public class Main {
 
                 // Print all registered accounts
                 case (4):
-                    Account.printAllAccounts(Account.getAccountList());
+                    Account.printAllAccounts(loggedAccount, Account.getAccountList());
                     break;
 
                 // Follow someone
@@ -44,16 +43,12 @@ public class Main {
 
                 // Print following
                 case (6):
-                    if (loggedAccount != null) {
-                        Account.printAllAccounts(loggedAccount.getFollowedList());
-                    }
+                    Account.printAllAccounts(loggedAccount, loggedAccount.getFollowedList());
                     break;
 
                 // Print followed
                 case (7):
-                    if (loggedAccount != null) {
-                        Account.printAllAccounts(loggedAccount.getFollowerList());
-                    }
+                    Account.printAllAccounts(loggedAccount, loggedAccount.getFollowerList());
                     break;
 
                 // Post Tweet
@@ -64,13 +59,11 @@ public class Main {
                 // Print tweets by logged user
                 case (9):
                     Twitter.printTweetsByAccount(loggedAccount);
-                    System.out.println("number of tweets by" + loggedAccount.getHandle() + ": " + loggedAccount.getTweets().length);
                     break;
 
                 // Print all tweets
                 case (10):
                     Twitter.printAllTweets();
-                    System.out.println("number of tweets currently posted" + Tweet.getTweetList().length);
                     break;
             }
         }
