@@ -1,8 +1,15 @@
 package br.com.ada.georg.twitter;
 import java.util.InputMismatchException;
 import java.util.Scanner;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class Input {
+
+    private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
+    private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+    private Input() {
+    }
 
     public static Account logIn(Account loggedAccount) {
         if (loggedAccount == null) {
@@ -161,7 +168,8 @@ public class Input {
             String username = getUsername();
             String password = getString("Insert your desired password");
             String name = getFullName();
-            String email = getString("Insert your email");
+//            String email = getString("Insert your email");
+            String email = getEmail();
             String birthDate = getString("Insert your birthdate");
 
             Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
@@ -169,8 +177,6 @@ public class Input {
         else {
             System.out.println("You have to log out before attempting to create an account");
         }
-
-
     }
 
     public static void postTweet(Account loggedAccount) {
@@ -201,6 +207,20 @@ public class Input {
         return false;
     }
 
+    private static boolean isEmailValid(String email) {
+        Matcher matcher = EMAIL_PATTERN.matcher(email);
+        return matcher.matches();
+    }
+
+    private static String getEmail() {
+        String email = getString("Insert your email");
+        if (isEmailValid(email)) {
+            return email;
+        }
+        return getEmail();
+    }
+
+    // TODO
     public static void printTweetsByAccount(Account account) {
 
     }
