@@ -157,7 +157,7 @@ public class Input {
     }
 
     public static void registerAccount(Account loggedAccount) {
-        if (loggedAccount == null) {
+        if (loggedAccount == null || loggedAccount.getUsername().equalsIgnoreCase("admin")) {
             String username = getUsername();
             String password = getString("Insert your desired password");
             String name = getFullName();

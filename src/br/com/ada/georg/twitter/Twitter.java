@@ -1,37 +1,56 @@
 package br.com.ada.georg.twitter;
 public class Twitter {
 
-    private static void printFormattedTweet(Tweet tweet, int lineLength) {
+    private static void printFormattedTweet(Tweet tweet) {
+        int lineLength = 70;
         printFrameLine(lineLength, "+", "-");
-        printFormattedTweetInfo(tweet, lineLength);
+        printMultipurposeTweetLine(returnTweetInfo(tweet), lineLength);
         printFrameLine(lineLength, "|"," ");
         printFormattedTweetString(tweet, lineLength);
         printFrameLine(lineLength, "|"," ");
-        printFormattedTweetMetrics(tweet, lineLength);
+        printMultipurposeTweetLine(returnTweetMetrics(tweet), lineLength);
         printFrameLine(lineLength, "+", "-");
     }
 
-    private static void printFormattedTweetInfo(Tweet tweet, int lineLength) {
-        var tweetInfoLine = "|  ";
+    //TODO
+    public static void printFormattedProfile() {
 
-        tweetInfoLine += tweet.getAuthor().getUser().getName() + "  " +
-                         tweet.getAuthor().getHandle() + " \u2022 " +
-                         tweet.getPostDate();
-
-        tweetInfoLine += " ".repeat(lineLength - tweetInfoLine.length() -1 ) + "  |";
-
-        System.out.println(tweetInfoLine);
     }
 
-    private static void printFormattedTweetMetrics(Tweet tweet, int lineLength) {
-        var tweetMetricsLine = "|  ";
+    //TODO
+    public static void printWelcomeMenu() {
 
-        tweetMetricsLine += "Comments: " + tweet.getCommentCount() + " ".repeat(3) + "Likes: " + tweet.getLikeCount();
+    }
 
-        tweetMetricsLine += " ".repeat(lineLength - tweetMetricsLine.length() -1 ) + "  |";
+    //TODO
+    public static void printFormattedLogInCreateAccountMenu() {
 
-        System.out.println(tweetMetricsLine);
+    }
 
+    //TODO
+    public static void printFormattedAdminMenu() {
+
+    }
+
+    private static String returnTweetInfo(Tweet tweet) {
+       return tweet.getAuthor().getUser().getName() + "  " +
+                tweet.getAuthor().getHandle() + " \u2022 " +
+                tweet.getPostDate();
+    }
+
+    private static String returnTweetMetrics (Tweet tweet) {
+        return "Comments: " + tweet.getCommentCount() +
+                " ".repeat(3) + "Likes: " + tweet.getLikeCount();
+    }
+
+    private static void printMultipurposeTweetLine(String line, int lineLength) {
+        var tweetLine = "|  ";
+
+        tweetLine += line;
+
+        tweetLine += " ".repeat(lineLength - tweetLine.length() -1 ) + "  |";
+
+        System.out.println(tweetLine);
     }
 
     private static void printFormattedTweetString(Tweet tweet, int lineLength) {
@@ -41,7 +60,7 @@ public class Twitter {
             word = tweetStringArray[i];
             boolean wordFitsOnLine = (tweetLine.length() + word.length() +3) < lineLength;
             if (wordFitsOnLine) {
-                tweetLine += " " + word;
+                tweetLine = (i!=0)? tweetLine + " " + word : tweetLine + word;
             }
             else {
                 tweetLine += " ".repeat(lineLength - tweetLine.length()+1) + "|";
@@ -77,7 +96,7 @@ public class Twitter {
                 return;
             }
             else {
-                printFormattedTweet((Tweet) tweet,80);
+                printFormattedTweet((Tweet) tweet);
             }
         }
     }
@@ -91,8 +110,7 @@ public class Twitter {
             if(tweet == null) {
                 return;
             }
-//            System.out.println(((Tweet) tweet).toString());
-            Twitter.printFormattedTweet((Tweet) tweet, 70);
+            Twitter.printFormattedTweet((Tweet) tweet);
         }
     }
 
@@ -101,7 +119,7 @@ public class Twitter {
             if(tweet == null) {
                 return;
             }
-            System.out.println(((Tweet)tweet).toString());
+            Twitter.printFormattedTweet((Tweet) tweet);
         }
     }
 //    private static void pr
