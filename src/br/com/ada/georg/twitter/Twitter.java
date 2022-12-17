@@ -1,12 +1,13 @@
 package br.com.ada.georg.twitter;
 public class Twitter {
-
-    //TODO
+    
     private static void printFormattedTweet(Tweet tweet, int lineLength) {
         printFrameLine(lineLength, "+", "-");
         printFormattedTweetInfo(tweet, lineLength);
         printFrameLine(lineLength, "|"," ");
         printFormattedTweetString(tweet, lineLength);
+        printFrameLine(lineLength, "|"," ");
+        printFormattedTweetMetrics(tweet, lineLength);
         printFrameLine(lineLength, "+", "-");
 
     }
@@ -23,6 +24,17 @@ public class Twitter {
         System.out.println(tweetInfoLine);
     }
 
+    private static void printFormattedTweetMetrics(Tweet tweet, int lineLength) {
+        var tweetMetricsLine = "|  ";
+
+        tweetMetricsLine += "Comments: " + tweet.getCommentCount() + " ".repeat(3) + "Likes: " + tweet.getLikeCount();
+
+        tweetMetricsLine += " ".repeat(lineLength - tweetMetricsLine.length() -1 ) + "  |";
+
+        System.out.println(tweetMetricsLine);
+
+    }
+
     private static void printFormattedTweetString(Tweet tweet, int lineLength) {
         String tweetStringArray[] = tweet.getTweet().trim().split(" "), word;
         var tweetLine ="|  ";
@@ -35,7 +47,7 @@ public class Twitter {
             else {
                 tweetLine += " ".repeat(lineLength - tweetLine.length()+1) + "|";
                 System.out.println(tweetLine);
-                tweetLine = "|  ";
+                tweetLine = "|  " + word;
             }
             if(i == tweetStringArray.length -1){
                 tweetLine += " ".repeat(lineLength- tweetLine.length()+1) + "|";
