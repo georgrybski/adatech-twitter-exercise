@@ -111,6 +111,11 @@ public class Account {
         return null;
     }
 
+    public static void postTweetInAccountTweetList(Account author, Tweet tweet) {
+        author.tweets = ArrayTools.expandArrayIfNecessary(author.tweets, author.tweetCount);
+        author.tweets[author.tweetCount++] = tweet;
+    }
+
     public static Object[] getAccountList() {
         return accountList;
     }

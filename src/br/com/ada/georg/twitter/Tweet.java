@@ -1,5 +1,7 @@
 package br.com.ada.georg.twitter;
 
+import java.util.Arrays;
+
 public class Tweet {
     private static Object[] tweetList = new Object[1];
     private static int tweetCount = 0;
@@ -13,11 +15,31 @@ public class Tweet {
     }
 
     public static void postTweet(String tweet, String postDate, Account author) {
-        var isTweetListFull = tweetCount == tweetList.length-1;
-        if(isTweetListFull) {
-            tweetList = ArrayTools.returnExpandedArray(tweetList);
-        }
-        tweetList[tweetCount++] = new Tweet(tweet, postDate, author);
+//        var isTweetListFull = tweetCount == tweetList.length-1;
+//        if(isTweetListFull) {
+//            tweetList = ArrayTools.returnExpandedArray(tweetList);
+//        }
+
+        Tweet postedTweet = new Tweet(tweet, postDate, author);
+
+        tweetList = ArrayTools.expandArrayIfNecessary(tweetList, tweetCount);
+        tweetList[tweetCount++] = postedTweet;
+
+        Account.postTweetInAccountTweetList(author, postedTweet);
+    }
+
+    @Override
+    public String toString() {
+        return "Tweet{" +
+                "tweet='" + tweet + '\'' +
+                ", postDate='" + postDate + '\'' +
+                ", name=" + author.getHandle() + "\'" +
+                ", author=" + author.getUsername() + "\'" +
+                ", comments=" + Arrays.toString(comments) +
+                ", commentCount=" + commentCount +
+                ", likes=" + Arrays.toString(likes) +
+                ", likeCount=" + likeCount +
+                '}';
     }
 
     //    TODO add proper date structure

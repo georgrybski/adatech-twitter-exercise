@@ -172,4 +172,37 @@ public class Input {
 
 
     }
+
+    public static void postTweet(Account loggedAccount) {
+        if (loggedAccount == null) {
+            System.out.println("You need to be logged in to tweet");
+            return;
+        }
+        var tweet = getValidatedTweetString();
+        // TODO format date properly
+        var postDate = getString("Insert your local time");
+        Tweet.postTweet(tweet, postDate, loggedAccount);
+    }
+
+    private static String getValidatedTweetString() {
+        String tweetString = getString("Write your tweet in one line (280 character limit)");
+        if (isTweetStringValid(tweetString)) {
+            return tweetString;
+        }
+        else {
+            return getValidatedTweetString();
+        }
+    }
+
+    private static boolean isTweetStringValid(String tweetString) {
+        if (tweetString.trim().length() <= 280){
+            return true;
+        }
+        return false;
+    }
+
+    public static void printTweetsByAccount(Account account) {
+
+    }
+
 }
