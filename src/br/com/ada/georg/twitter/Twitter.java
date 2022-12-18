@@ -297,14 +297,29 @@ public class Twitter {
     }
 
     public static void viewTimelines(Account loggedAccount) {
-        switch (Input.getInt(new String[]{"1 View All Tweets", "2 View My Tweets", "3 View Tweets From Followers", "4 View Tweets From Followed", "5 Go Back To Menu"}, 1, 4)) {
+        switch (Input.getInt(new String[]{"1 View All Tweets", "2 View My Tweets", "3 View Tweets From Followers", "4 View Tweets From Followed", "5 Go Back To Menu"}, 1, 5)) {
+
             case 1:
+                if (Tweet.getTweetList()[0] == null){
+                    printFramedMessage("No Tweets have been posted yet :(");
+                    break;
+                }
                 Twitter.printAllTweets();
                 break;
+
             case 2:
+                if (loggedAccount.getTweetCount() == 0) {
+                    printFramedMessage("You haven't posted any Tweet yet");
+                    break;
+                }
                 Twitter.printAllTweetsInList(loggedAccount.getTweets());
                 break;
+
             case 3:
+                if (loggedAccount.getFollowerCount() == 0) {
+                    printFramedMessage("Sorry, you have no followers yet :(");
+                    break;
+                }
                 for (Object follower : loggedAccount.getFollowerList()) {
                     if (follower != null) {
                         Twitter.printAllTweetsInList(((Account) follower).getTweets());
@@ -313,7 +328,12 @@ public class Twitter {
                     }
                 }
                 break;
+
             case 4:
+                if (loggedAccount.getFollowCount() == 0) {
+                    printFramedMessage("You haven't followed anyone yet");
+                    break;
+                }
                 for (Object followed : loggedAccount.getFollowedList()) {
                     if (followed != null) {
                         Twitter.printAllTweetsInList(((Account) followed).getTweets());
