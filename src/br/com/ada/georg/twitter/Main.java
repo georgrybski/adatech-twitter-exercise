@@ -4,16 +4,20 @@ public class Main {
     public static void main(String[] args) {
         Account.registerAccount("admin", "admin",
                 "Admin", "admin@twitter.com", Time.getCurrentDate());
+        Twitter.printFramedMessage("Hello there! To access administrator privileges, log in with username admin  and password admin.");
+        Twitter.printWelcomeMessage();
+
+
         boolean run = true;
         Account loggedAccount = null;
 
         while (run) {
 
-            Twitter.printLoggedInStatus(loggedAccount);
-
             if (loggedAccount != null) {
+
                 boolean isAdmin = loggedAccount.getUsername().equalsIgnoreCase("admin");
                 if (isAdmin) {
+                    Twitter.printLoggedInStatus(loggedAccount);
                     switch (Twitter.getAdminMenuInput()) {
 
                         // Create account
@@ -45,6 +49,7 @@ public class Main {
                     }
                 }
                 else {
+                    Twitter.printLoggedInStatus(loggedAccount);
                     switch (Twitter.getUserMenuInput()) {
 
                         // Post Tweet
@@ -54,17 +59,16 @@ public class Main {
 
                         // Print all tweets
                         case (2):
-                            Twitter.printAllTweets();
+                            Twitter.viewTimelines(loggedAccount);
                             break;
 
-                        // Print tweets by logged user
+                        // View My Profile
                         case (3):
-                            Twitter.printTweetsByAccount(loggedAccount);
+                            Twitter.printFormattedProfile(loggedAccount, loggedAccount);
                             break;
 
-                        // Print all registered accounts
                         case (4):
-                            Account.printAllAccounts(loggedAccount, Account.getAccountList());
+                            Input.searchProfile(loggedAccount);
                             break;
 
                         // Follow someone
@@ -72,32 +76,32 @@ public class Main {
                             Input.follow(loggedAccount);
                             break;
 
-                        // Print following
+                        // View My Followers
                         case (6):
-                            Account.printAllAccounts(loggedAccount, loggedAccount.getFollowedList());
+                            Twitter.viewFollowers(loggedAccount);
                             break;
 
-                        // Print followed
+                        // View Accounts I Follow
                         case (7):
-                            Account.printAllAccounts(loggedAccount, loggedAccount.getFollowerList());
+                            Twitter.viewFollowed(loggedAccount);
                             break;
 
-                        // Exit application
+                        // Log Out
                         case (8):
                             loggedAccount = Account.logOut(loggedAccount);
                             break;
 
-                        // Log out
+                        // Exit
                         case (9):
                             run = false;
                             Twitter.printGoodbyeMessage();
                             break;
-
+                        // TODO: add functionality to delete comments and user's account.
                     }
                 }
             }
-
             if (loggedAccount == null) {
+                Twitter.printLoggedInStatus(loggedAccount);
                 switch (Twitter.getGuestMenuInput()) {
 
                     // Log in

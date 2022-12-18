@@ -52,7 +52,10 @@ public class Twitter {
     }
 
 
-    private static void printFormattedProfile(Account account, Account loggedAccount) {
+    public static void printFormattedProfile(Account account, Account loggedAccount) {
+        if (account.getUsername().equalsIgnoreCase("admin")) {
+            return;
+        }
         int lineLength = 70;
         System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
@@ -109,7 +112,6 @@ public class Twitter {
             }
             System.out.println();
         }
-
     }
 
     public static void printFramedMessage(String message) {
@@ -117,8 +119,7 @@ public class Twitter {
         printFrameLine(lineLength, "+", "-");
         if (message.length() > lineLength - 6) {
             printFormattedMultiLineString(message, lineLength);
-        }
-        else {
+        } else {
             printIndentedFramedLine(message, lineLength);
         }
         printFrameLine(lineLength, "+", "-");
@@ -173,7 +174,7 @@ public class Twitter {
                 innerButtonsTopLine = "" + optionsMatrix[i][1] + " ".repeat(2);
                 innerButtonsMiddleLine = "" + optionsMatrix[i][0] + " ".repeat(2);
 
-                if (i == optionsMatrix.length - 1 && optionsAdded != i && i % 2 != 0  && optionsMatrix.length > 2) {
+                if (i == optionsMatrix.length - 1 && optionsAdded != i && i % 2 != 0 && optionsMatrix.length > 2) {
                     oddEvenOffset = " ".repeat((lineLength - innerButtonsMiddleLine.trim().length()) % 2);
                     spaces = " ".repeat((lineLength - innerButtonsMiddleLine.trim().length()) / 2);
                     System.out.println("|" + spaces + innerButtonsTopLine.trim() + spaces + oddEvenOffset + "|");
@@ -183,18 +184,6 @@ public class Twitter {
             }
         }
         printFrameLine(lineLength, "+", "-");
-    }
-
-    public static void printGuestOptions() {
-        printMenuOptions(GUEST_MENU_OPTIONS);
-    }
-
-    public static void printAdminOptions() {
-        printMenuOptions(ADMIN_MENU_OPTIONS);
-    }
-
-    public static void printUserOptions() {
-        printMenuOptions(USER_MENU_OPTIONS);
     }
 
     private static String[][] convertOptionsArrayToMatrix(String[] options) {
@@ -254,20 +243,19 @@ public class Twitter {
     }
 
     private static void printFormattedMultiLineString(String string, int lineLength) {
-        String stringArray[] = string.trim().split(" "), currentLine ="";
+        String stringArray[] = string.trim().split(" "), currentLine = "";
         for (int i = 0; i < stringArray.length; i++) {
             if (stringArray[i].length() + currentLine.length() + 1 < lineLength - 6) {
                 currentLine += stringArray[i] + " ";
-            }
-            else {
+            } else {
                 printIndentedFramedLine(currentLine, lineLength);
                 currentLine = stringArray[i];
-                if(i == stringArray.length-1){
+                if (i == stringArray.length - 1) {
                     printIndentedFramedLine(currentLine, lineLength);
                     return;
                 }
             }
-            if(i == stringArray.length-1){
+            if (i == stringArray.length - 1) {
                 printIndentedFramedLine(currentLine, lineLength);
                 return;
             }
@@ -275,42 +263,8 @@ public class Twitter {
 
     }
 
-
-    // Experimental
-    private static void printTweetFrame(int length, int height) {
-        printFrameLine(length, "+", "-");
-        for (int i = 0; i < height - 2; i++) {
-            printFrameLine(length, "|", " ");
-        }
-        printFrameLine(length, "+", "-");
-    }
-
     private static void printFrameLine(int length, String delimiter, String filler) {
         System.out.println(delimiter + filler.repeat(length) + delimiter);
-    }
-
-    private static void printTweetsInList(Object[] tweetList) {
-        for (Object tweet : tweetList) {
-            if (tweet == null) {
-                return;
-            } else {
-                printFormattedTweet((Tweet) tweet);
-                System.out.println();
-            }
-        }
-    }
-
-    public static void printTweetsByAccount(Account loggedAccount) {
-        if (loggedAccount == null) {
-            printFramedMessage("You need to be logged in to check tweets");
-        }
-        for (Object tweet : loggedAccount.getTweets()) {
-            if (tweet == null) {
-                return;
-            }
-            Twitter.printFormattedTweet((Tweet) tweet);
-            System.out.println();
-        }
     }
 
     public static void printAllTweets() {
@@ -323,24 +277,55 @@ public class Twitter {
                 return;
             }
             Twitter.printFormattedTweet((Tweet) tweet);
+            System.out.println();
         }
     }
 
-    //    private static void pr
-    private static void viewProfile(Account account) {
-
+    public static void viewTimelines(Account loggedAccount) {
+        switch (Input.getInt(new String[]{"1 View All Tweets", "2 View My Tweets", "3 View Tweets From Followers", "4 View Tweets From Followed", "5 Go Back To Menu"}, 1, 4)) {
+            case 1:
+                Twitter.printAllTweets();
+                break;
+            case 2:
+                Twitter.printAllTweetsInList(loggedAccount.getTweets());
+                break;
+            case 3:
+                for (Object follower : loggedAccount.getFollowerList()) {
+                    if (follower != null) {
+                        Twitter.printAllTweetsInList(((Account) follower).getTweets());
+                    } else {
+                        return;
+                    }
+                }
+                break;
+            case 4:
+                for (Object followed : loggedAccount.getFollowedList()) {
+                    if (followed != null) {
+                        Twitter.printAllTweetsInList(((Account) followed).getTweets());
+                    } else {
+                        return;
+                    }
+                }
+                break;
+            case 5:
+                break;
+        }
     }
 
-    private static void viewTimelines() {
 
+    public static void viewFollowed(Account loggedAccount) {
+        if(loggedAccount.getFollowCount() == 0) {
+            printFramedMessage("You are not following anyone at the moment :(");
+            return;
+        }
+        Account.printAllAccounts(loggedAccount, loggedAccount.getFollowedList());
     }
 
-    private static void viewFollowers() {
-
-    }
-
-    private static void viewFollowed() {
-
+    public static void viewFollowers(Account loggedAccount) {
+        if (loggedAccount.getFollowerCount() == 0) {
+            printFramedMessage("Sorry, You have no followers at the moment :(");
+        }
+        Account.printAllAccounts(loggedAccount, loggedAccount.getFollowerList());
     }
 
 

@@ -1,6 +1,10 @@
 package br.com.ada.georg.twitter;
 
 public class ArrayTools {
+
+    private ArrayTools() {
+    }
+
     public static Object[] returnExpandedArray(Object[] oldArray) {
         var newArray = new Object[oldArray.length+50];
         transferFromTo(oldArray,newArray);

@@ -1,4 +1,5 @@
 package br.com.ada.georg.twitter;
+
 import java.util.InputMismatchException;
 import java.util.Scanner;
 import java.util.regex.Matcher;
@@ -8,6 +9,10 @@ public class Input {
 
     private static final String EMAIL_REGEX = "^[\\w-\\+]+(\\.[\\w]+)*@[\\w-]+(\\.[\\w]+)*(\\.[a-z]{2,})$";
     private static final Pattern EMAIL_PATTERN = Pattern.compile(EMAIL_REGEX, Pattern.CASE_INSENSITIVE);
+
+//    private static final String USERNAME_REGEX = Not added for the sake of simplicity during testing;
+//    private static final Pattern USERNAME_PATTERN = Pattern.compile(USERNAME_REGEX, Pattern.CASE_INSENSITIVE);
+
     private Input() {
     }
 
@@ -29,8 +34,7 @@ public class Input {
                         return logIn(loggedAccount);
                 }
             }
-        }
-        else {
+        } else {
             Twitter.printFramedMessage("You are already logged in!");
             switch (getInt(new String[]{"1 Go Back To Menu", "2 Log Out"}, 1, 2)) {
                 case 1:
@@ -42,26 +46,49 @@ public class Input {
         return null;
     }
 
-    public static void follow (Account loggedAccount) {
-        if (loggedAccount == null) {
-            Twitter.printFramedMessage("You have to be logged in to follow someone.");
-            return;
-        }
+    public static void follow(Account loggedAccount) {
+//        if (loggedAccount == null) {
+//            Twitter.printFramedMessage("You have to be logged in to follow someone.");
+//            return;
+//        }
         var usernameToFollow = getString("Insert the username you would like to follow");
-        if (usernameToFollow.equalsIgnoreCase(loggedAccount.getUsername())){
+        if (usernameToFollow.equalsIgnoreCase(loggedAccount.getUsername())) {
             Twitter.printFramedMessage("You can't follow yourself");
             return;
         }
-        Account.follow(loggedAccount, usernameToFollow);
-        Twitter.printFramedMessage("You are now following \"" + usernameToFollow + "\"");
-}
+        if (Account.follow(loggedAccount, usernameToFollow)){
+            Twitter.printFramedMessage("You are now following \"" + "@" + usernameToFollow + "\"");
+        }
+    }
 
-//    public static String getBirthDate() {
-//        String birthDate = getString("Insert your birthdate in the format dd/mm/yyyy");
-//        Time.isValidDate(birthDate) {
-//
-//        }
-//    }
+    public static void searchProfile(Account loggedAccount) {
+        int found = 0;
+        String username = getString("Insert the name/username you would like to search");
+        if (username.equalsIgnoreCase("admin")) {
+            Twitter.printFramedMessage("No profiles match your search :(");
+            return;
+        }
+        for (int searched = 0; searched < Account.getAccountList().length; searched++) {
+            if (Account.getAccountList()[searched] == null) {
+                if (found == 0) {
+                    Twitter.printFramedMessage("No profiles match your search :(");
+                    return;
+                } } else {
+                    boolean searchStringInUsername = ((Account) Account.getAccountList()[searched]).getHandle().toLowerCase().contains(username);
+                    boolean searchStringInName = ((Account) Account.getAccountList()[searched]).getUser().getName().toLowerCase().contains(username);
+                    if (searchStringInUsername || searchStringInName) {
+                        Twitter.printFormattedProfile((Account) Account.getAccountList()[searched], loggedAccount);
+                        found++;
+                    }
+                }
+                if (found > 0 && searched == Account.getAccountList().length -1) {
+                    String results = found > 1? " results." : " result";
+                    Twitter.printFramedMessage("^ \"" + username + "\" search yielded " + found + results + " ^");
+                }
+            }
+        }
+
+
 
     private static Object get(String expectedInputType) {
         Scanner scanner = new Scanner(System.in);
@@ -75,22 +102,20 @@ public class Input {
                 default:
                     return null;
             }
-        }
-        catch (InputMismatchException e){
+        } catch (InputMismatchException e) {
             return null;
         }
     }
 
     private static Object get(String expectedInputType, String prompt) {
         Object input;
-        if(!prompt.isBlank()){
+        if (!prompt.isBlank()) {
             Twitter.printFramedMessage(prompt);
         }
         input = get(expectedInputType);
         if (input != null) {
             return input;
-        }
-        else {
+        } else {
             return get(expectedInputType, prompt);
         }
     }
@@ -98,8 +123,7 @@ public class Input {
     public static String getString(String prompt) {
         try {
             return ((String) get("String", prompt)).trim();
-        }
-        catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             return getString(prompt);
         }
     }
@@ -111,33 +135,30 @@ public class Input {
 
         try {
             input = (int) get("int", prompt);
-        }
-        catch (ClassCastException e) {
+        } catch (ClassCastException e) {
             Twitter.printFramedMessage("Invalid input! Insert a value between " + minValue + " and " + maxValue);
             return getInt(options, minValue, maxValue);
         }
         boolean inputInRange = (input >= minValue && input <= maxValue);
         if (inputInRange) {
             return input;
-        }
-        else {
+        } else {
             return getInt(options, minValue, maxValue);
         }
     }
 
     public static String getUsername() {
         var username = (String) getString("Insert your desired username");
-        if (!isUsernameValid(username)){
+        if (!isUsernameValid(username)) {
             Twitter.printFramedMessage("Usernames must have between 4 and 15 characters and " +
-                               "contain only letters A-Z, numbers 0-9 or underscores");
+                    "contain only letters A-Z, numbers 0-9 or underscores");
             return getUsername();
         }
         AccountChecker usernameFree = AccountChecker.accountExists(username, Account.getAccountList());
         if (usernameFree.exists()) {
             Twitter.printFramedMessage("That username is already taken");
             return getUsername();
-        }
-        else {
+        } else {
             return username;
         }
     }
@@ -152,7 +173,7 @@ public class Input {
     }
 
     public static String formatName(String name) {
-        String formattedName = name.substring(0,1).toUpperCase();
+        String formattedName = name.substring(0, 1).toUpperCase();
         return formattedName + name.substring(1).toLowerCase();
     }
 
@@ -166,10 +187,9 @@ public class Input {
 
         // Regex to check if username contains only Letters A-Z, numbers 9-0 and underscores.
         boolean usernameCharactersValid = (username.matches("^[a-zA-Z0-9_]+$"));
-        if(usernameLengthValid && usernameCharactersValid) {
+        if (usernameLengthValid && usernameCharactersValid) {
             return true;
-        }
-        else {
+        } else {
             return false;
         }
     }
@@ -179,14 +199,12 @@ public class Input {
             String username = getUsername();
             String password = getString("Insert your desired password");
             String name = getFullName();
-//            String email = getString("Insert your email");
             String email = getEmail();
             String birthDate = getBirthDate();
 
 
             Account.registerAccount(username, password, name, email, birthDate);
-        }
-        else {
+        } else {
             Twitter.printFramedMessage("You have to log out before attempting to create an account");
         }
     }
@@ -220,14 +238,13 @@ public class Input {
         String tweetString = getString("Write your tweet in one line (280 character limit)");
         if (isTweetStringValid(tweetString)) {
             return tweetString;
-        }
-        else {
+        } else {
             return getValidatedTweetString();
         }
     }
 
     private static boolean isTweetStringValid(String tweetString) {
-        if (tweetString.trim().length() <= 280){
+        if (tweetString.trim().length() <= 280) {
             return true;
         }
         return false;
@@ -243,13 +260,7 @@ public class Input {
         if (isEmailValid(email)) {
             return email;
         }
-        Twitter.printFramedMessage("Invalid input! Insert an email in the format such as: username@domain.com");
+        Twitter.printFramedMessage("Invalid input! Emails should be inserted in a format such: username@domain.com");
         return getEmail();
     }
-
-    // TODO
-    public static void printTweetsByAccount(Account account) {
-
-    }
-
 }
