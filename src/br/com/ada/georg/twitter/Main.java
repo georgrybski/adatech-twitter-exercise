@@ -38,7 +38,7 @@ public class Main {
                         case 3:
                             Twitter.printAllTweets();
                             break;
-                            
+
                         // Log out
                         case 4:
                             loggedAccount = Account.logOut(loggedAccount);
@@ -57,13 +57,13 @@ public class Main {
                             0, 10)) {
 
                         // Exit application
-                        case (0):
+                        case (9):
                             run = false;
                             Twitter.printGoodbyeMessage();
                             break;
 
                         // Log out
-                        case (3):
+                        case (8):
                             loggedAccount = Account.logOut(loggedAccount);
                             break;
 
@@ -88,17 +88,17 @@ public class Main {
                             break;
 
                         // Post Tweet
-                        case (8):
+                        case (1):
                             Input.postTweet(loggedAccount);
                             break;
 
                         // Print tweets by logged user
-                        case (9):
+                        case (3):
                             Twitter.printTweetsByAccount(loggedAccount);
                             break;
 
                         // Print all tweets
-                        case (10):
+                        case (2):
                             Twitter.printAllTweets();
                             break;
                     }
