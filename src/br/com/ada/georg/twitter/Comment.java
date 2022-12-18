@@ -1,6 +1,8 @@
 package br.com.ada.georg.twitter;
 
 public class Comment {
+
+    //    TODO: Implement comments (class not used yet)
     private String content;
     private Account author;
     private Tweet location;

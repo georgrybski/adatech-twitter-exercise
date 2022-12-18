@@ -1,6 +1,10 @@
 package br.com.ada.georg.twitter;
 
 public class User {
+
+    //TODO: Implement email checking.
+    private static Object[] registeredEmails = new Object[1];
+
     private String name;
     private String email;
     private String birthDate;
@@ -9,15 +13,6 @@ public class User {
         this.name = name;
         this.email = email;
         this.birthDate = birthDate;
-    }
-
-    @Override
-    public String toString() {
-        return "User{" +
-                "name='" + name + '\'' +
-                ", email='" + email + '\'' +
-                ", birthDate='" + birthDate + '\'' +
-                '}';
     }
 
     public String getName() {
