@@ -77,7 +77,7 @@ public class Input {
 
     private static Object get(String expectedInputType, String prompt) {
         Object input;
-        System.out.println(prompt);
+        Twitter.printFramedMessage(prompt);
         input = get(expectedInputType);
         if (input != null) {
             return input;

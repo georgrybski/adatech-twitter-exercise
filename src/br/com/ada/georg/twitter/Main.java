@@ -5,13 +5,6 @@ public class Main {
 
         boolean run = true;
         Account loggedAccount = null;
-        Twitter.printWelcomeMessage();
-        Twitter.printAdminOptions();
-        Twitter.printUserOptions();
-        Twitter.printGuestOptions();
-
-        //TODO create admin account (with privilege to view all accounts info).
-//        Account.registerAccount();
 
         while (run) {
 
@@ -51,9 +44,11 @@ public class Main {
                             break;
                         // TODO: add admin capability to suspend and/or delete accounts and delete tweets.
                     }
-                } else {
+                }
+                else {
                     Twitter.printUserOptions();
-                    switch (Input.getInt("0-Exit 3-Log out 4- print all account info, 5-follow 6-printFollowed \n7-printFollowing 8-Post Tweet 9-View my tweets 10-View All tweets",
+                    switch (Input.getInt("0-Exit 3-Log out 4- print all account info, 5-follow 6-printFollowed " +
+                                    "7-printFollowing 8-Post Tweet 9-View my tweets 10-View All tweets",
                             0, 10)) {
 
                         // Exit application
@@ -112,18 +107,18 @@ public class Main {
 
                     // TODO: add a "goodbye" method
                     // Exit application
-                    case (0):
+                    case (3):
                         run = false;
                         Twitter.printGoodbyeMessage();
                         break;
 
                     // Create account
-                    case (1):
+                    case (2):
                         Input.registerAccount(loggedAccount);
                         break;
 
                     // Log in
-                    case (2):
+                    case (1):
                         loggedAccount = Input.logIn(loggedAccount);
                         break;
                 }

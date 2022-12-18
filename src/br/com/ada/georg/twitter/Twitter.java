@@ -3,23 +3,37 @@ package br.com.ada.georg.twitter;
 public class Twitter {
 
     private static final String[] GUEST_MENU_OPTIONS = {"1 Log In", "2 Create Account", "3 Exit"};
+    private static final int GUEST_MENU_MIN_INPUT = 1;
+    private static final int GUEST_MENU_MAX_INPUT = 3;
 
     private static final String[] ADMIN_MENU_OPTIONS = {"1 Create Account", "2 View All Accounts", " 3 View All Tweets", "4 Log out", "5 Exit"};
+    private static final int ADMIN_MENU_MIN_INPUT = 1;
+    private static final int ADMIN_MENU_MAX_INPUT = 5;
 
-    private static final String[] USER_MENU_OPTIONS = {"1 Tweet", "2 View Timeline", "3 View My Tweets", "4 View My Profile", "5 Follow", "6 View My Followers", "7 View Who I Follow", "8 Log Out", "9 Exit"};
+    private static final String[] USER_MENU_OPTIONS = {"1 Tweet", "2 View Timeline", "3 View My Profile", "4 Search Profile", "5 Follow", "6 View My Followers", "7 View Accounts I Follow", "8 Log Out", "9 Exit"};
+    private static final int USER_MENU_MIN_INPUT = 1;
+    private static final int USER_MENU_MAX_INPUT = 9;
 
 
     private Twitter() {
     }
 
+
+
     private static void printFormattedTweet(Tweet tweet) {
         int lineLength = 70;
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
+        System.out.print(" ".repeat(6));
         printMultipurposeLine(returnTweetInfo(tweet), lineLength);
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "|", " ");
         printFormattedTweetString(tweet, lineLength);
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "|", " ");
+        System.out.print(" ".repeat(6));
         printMultipurposeLine(returnTweetMetrics(tweet), lineLength);
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
     }
 
@@ -68,9 +82,16 @@ public class Twitter {
     public static void printFramedMessage(String message) {
         int lineLength = 82;
         printFrameLine(lineLength, "+", "-");
-        printIndentedFramedLine(message, lineLength);
+        if (message.length() > lineLength - 6) {
+            printFormattedMultiLineString(message, lineLength);
+        }
+        else {
+            printIndentedFramedLine(message, lineLength);
+        }
         printFrameLine(lineLength, "+", "-");
     }
+
+
 
     //TODO
     public static void printWelcomeMessage() {
@@ -92,10 +113,13 @@ public class Twitter {
 
     private static void printIndentedFramedLine(String string, int lineLength) {
         int repeat = (lineLength - string.length()) / 2;
-        String line = "|" + " ".repeat(repeat) + string + " ".repeat(repeat) + "|";
+        int oddOrEvenOffset = (lineLength - string.length()) % 2;
+        String line = "|" + " ".repeat(repeat) + string + " ".repeat(repeat + oddOrEvenOffset) + "|";
         System.out.println(line);
     }
 
+
+    //TODO: refactor method
     public static void printMenuOptions(String[] options) {
         int lineLength = 82;
         var optionsMatrix = convertOptionsArrayToMatrix(options);
@@ -117,7 +141,7 @@ public class Twitter {
                 innerButtonsTopLine = "" + optionsMatrix[i][1] + " ".repeat(2);
                 innerButtonsMiddleLine = "" + optionsMatrix[i][0] + " ".repeat(2);
 
-                if (i == optionsMatrix.length - 1 && optionsAdded != i && i != 2) {
+                if (i == optionsMatrix.length - 1 && optionsAdded != i && i % 2 != 0) {
                     oddEvenOffset = " ".repeat((lineLength - innerButtonsMiddleLine.trim().length()) % 2);
                     spaces = " ".repeat((lineLength - innerButtonsMiddleLine.trim().length()) / 2);
                     System.out.println("|" + spaces + innerButtonsTopLine.trim() + spaces + oddEvenOffset + "|");
@@ -148,16 +172,6 @@ public class Twitter {
             optionsMatrix[i][1] = "+" + "-".repeat(options[i].length() + 2) + "+";
         }
         return optionsMatrix;
-    }
-
-    //TODO
-    public static void printFormattedLogInCreateAccountMenu() {
-
-    }
-
-    //TODO
-    public static void printFormattedAdminMenu() {
-
     }
 
     private static String returnTweetInfo(Tweet tweet) {
@@ -191,18 +205,44 @@ public class Twitter {
                 tweetLine = (i != 0) ? tweetLine + " " + word : tweetLine + word;
             } else {
                 tweetLine += " ".repeat(lineLength - tweetLine.length() + 1) + "|";
+                System.out.print(" ".repeat(6));
                 System.out.println(tweetLine);
                 tweetLine = "|  " + word;
             }
             if (i == tweetStringArray.length - 1) {
                 tweetLine += " ".repeat(lineLength - tweetLine.length() + 1) + "|";
+                System.out.print(" ".repeat(6));
                 System.out.println(tweetLine);
                 return;
             }
         }
+        System.out.print(" ".repeat(6));
         tweetLine += " ".repeat(lineLength - tweetLine.length() + 1);
         System.out.println(tweetLine);
     }
+
+    private static void printFormattedMultiLineString(String string, int lineLength) {
+        String stringArray[] = string.trim().split(" "), currentLine ="";
+        for (int i = 0; i < stringArray.length; i++) {
+            if (stringArray[i].length() + currentLine.length() + 1 < lineLength - 6) {
+                currentLine += stringArray[i];
+            }
+            else {
+                printIndentedFramedLine(currentLine, lineLength);
+                currentLine = stringArray[i];
+                if(i == stringArray.length-1){
+                    printIndentedFramedLine(currentLine, lineLength);
+                    return;
+                }
+            }
+            if(i == stringArray.length-1){
+                printIndentedFramedLine(currentLine, lineLength);
+                return;
+            }
+        }
+
+    }
+
 
     // Experimental
     private static void printTweetFrame(int length, int height) {
