@@ -1,6 +1,9 @@
 package br.com.ada.georg.twitter;
 
 public class User {
+
+    private static Object[] registeredEmails = new Object[1];
+
     private String name;
     private String email;
     private String birthDate;
