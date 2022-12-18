@@ -18,7 +18,21 @@ public class Twitter {
     private Twitter() {
     }
 
+    private static int getMenuInput(String[] menuOptions, int minInput, int maxInput) {
+        return Input.getInt(menuOptions, minInput, maxInput);
+    }
 
+    public static int getGuestMenuInput() {
+        return getMenuInput(GUEST_MENU_OPTIONS, GUEST_MENU_MIN_INPUT, GUEST_MENU_MAX_INPUT);
+    }
+
+    public static int getUserMenuInput() {
+        return getMenuInput(USER_MENU_OPTIONS, USER_MENU_MIN_INPUT, USER_MENU_MAX_INPUT);
+    }
+
+    public static int getAdminMenuInput() {
+        return getMenuInput(ADMIN_MENU_OPTIONS, ADMIN_MENU_MIN_INPUT, ADMIN_MENU_MAX_INPUT);
+    }
 
     private static void printFormattedTweet(Tweet tweet) {
         int lineLength = 70;
@@ -40,18 +54,29 @@ public class Twitter {
 
     private static void printFormattedProfile(Account account, Account loggedAccount) {
         int lineLength = 70;
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
+        System.out.print(" ".repeat(6));
         printMultipurposeLine(account.getUser().getName(), lineLength);
+        System.out.print(" ".repeat(6));
         printMultipurposeLine(account.getHandle(), lineLength);
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "|", " ");
+        System.out.print(" ".repeat(6));
         printMultipurposeLine("Joined " + account.getCreationDate(), lineLength);
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "|", " ");
+        System.out.print(" ".repeat(6));
         printMultipurposeLine(returnFollowerInfo(account), lineLength);
         if (loggedAccount.getUsername().equalsIgnoreCase("admin")) {
+            System.out.print(" ".repeat(6));
             printFrameLine(lineLength, "|", " ");
+            System.out.print(" ".repeat(6));
             printMultipurposeLine(returnEmailInfo(account), lineLength);
+            System.out.print(" ".repeat(6));
             printMultipurposeLine(returnBirthDateInfo(account), lineLength);
         }
+        System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
     }
 
@@ -70,13 +95,21 @@ public class Twitter {
 
     public static void printAllProfiles(Account loggedAccount) {
         for (Object account : Account.getAccountList()) {
+
+            if (Account.getAccountList()[1] == null) {
+                printFramedMessage("No accounts registered yet :(");
+                return;
+            }
             if (account == null) {
+                printFramedMessage("^ Scroll up to view profiles ^");
                 return;
             }
             if (!((Account) account).getUsername().equalsIgnoreCase("admin")) {
                 printFormattedProfile((Account) account, loggedAccount);
             }
+            System.out.println();
         }
+
     }
 
     public static void printFramedMessage(String message) {
@@ -91,21 +124,20 @@ public class Twitter {
         printFrameLine(lineLength, "+", "-");
     }
 
-
-
     //TODO
     public static void printWelcomeMessage() {
         printFramedMessage("Welcome to Ada Tech's Twitter by Georg Rybski!");
-
+        //TODO: add twitter logo printer
     }
 
     public static void printGoodbyeMessage() {
         printFramedMessage("Thanks for using Ada Tech's Twitter by Georg Rybski!");
+        //TODO: add twitter logo printer
     }
 
     public static void printLoggedInStatus(Account loggedAccount) {
         if (loggedAccount == null) {
-            printFramedMessage("You are not logged in yet!");
+            printFramedMessage("You are not logged in yet.");
         } else {
             printFramedMessage("You are logged in as: \"" + loggedAccount.getHandle() + "\"");
         }
@@ -141,7 +173,7 @@ public class Twitter {
                 innerButtonsTopLine = "" + optionsMatrix[i][1] + " ".repeat(2);
                 innerButtonsMiddleLine = "" + optionsMatrix[i][0] + " ".repeat(2);
 
-                if (i == optionsMatrix.length - 1 && optionsAdded != i && i % 2 != 0) {
+                if (i == optionsMatrix.length - 1 && optionsAdded != i && i % 2 != 0  && optionsMatrix.length > 2) {
                     oddEvenOffset = " ".repeat((lineLength - innerButtonsMiddleLine.trim().length()) % 2);
                     spaces = " ".repeat((lineLength - innerButtonsMiddleLine.trim().length()) / 2);
                     System.out.println("|" + spaces + innerButtonsTopLine.trim() + spaces + oddEvenOffset + "|");
@@ -225,7 +257,7 @@ public class Twitter {
         String stringArray[] = string.trim().split(" "), currentLine ="";
         for (int i = 0; i < stringArray.length; i++) {
             if (stringArray[i].length() + currentLine.length() + 1 < lineLength - 6) {
-                currentLine += stringArray[i];
+                currentLine += stringArray[i] + " ";
             }
             else {
                 printIndentedFramedLine(currentLine, lineLength);
@@ -282,7 +314,11 @@ public class Twitter {
     }
 
     public static void printAllTweets() {
-        for (Object tweet : Tweet.getTweetList()) {
+        printAllTweetsInList(Tweet.getTweetList());
+    }
+
+    public static void printAllTweetsInList(Object[] tweets) {
+        for (Object tweet : tweets) {
             if (tweet == null) {
                 return;
             }

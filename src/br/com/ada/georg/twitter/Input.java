@@ -21,9 +21,9 @@ public class Input {
                 Twitter.printFramedMessage("You have successfully logged in as " + logInCheck.getAccount().getUsername());
                 return logInCheck.getAccount();
             } else {
-                switch (getInt("Username and/or password incorrect, press 0 to go back to the menu or 1 to try again", 0, 1)) {
+                switch (getInt(new String[]{"1 Try Again", "2 Go Back To Menu"}, 1, 2)) {
                     default:
-                    case 0:
+                    case 2:
                         return null;
                     case 1:
                         return logIn(loggedAccount);
@@ -32,10 +32,10 @@ public class Input {
         }
         else {
             Twitter.printFramedMessage("You are already logged in!");
-            switch (getInt("Press 1 to log or 0 to go back to the menu", 0,1)) {
-                case 0:
-                    return loggedAccount;
+            switch (getInt(new String[]{"1 Go Back To Menu", "2 Log Out"}, 1, 2)) {
                 case 1:
+                    return loggedAccount;
+                case 2:
                     return null;
             }
         }
@@ -56,6 +56,12 @@ public class Input {
         Twitter.printFramedMessage("You are now following \"" + usernameToFollow + "\"");
 }
 
+//    public static String getBirthDate() {
+//        String birthDate = getString("Insert your birthdate in the format dd/mm/yyyy");
+//        Time.isValidDate(birthDate) {
+//
+//        }
+//    }
 
     private static Object get(String expectedInputType) {
         Scanner scanner = new Scanner(System.in);
@@ -98,22 +104,24 @@ public class Input {
         }
     }
 
-    public static int getInt(String prompt, int minValue, int maxValue) {
+    public static int getInt(String[] options, int minValue, int maxValue) {
         int input;
+        Twitter.printMenuOptions(options);
+        String prompt = ("Insert a value between " + minValue + " and " + maxValue);
 
         try {
             input = (int) get("int", prompt);
         }
         catch (ClassCastException e) {
-            Twitter.printFramedMessage("Invalid input!");
-            return getInt(prompt, minValue, maxValue);
+            Twitter.printFramedMessage("Invalid input! Insert a value between " + minValue + " and " + maxValue);
+            return getInt(options, minValue, maxValue);
         }
         boolean inputInRange = (input >= minValue && input <= maxValue);
         if (inputInRange) {
             return input;
         }
         else {
-            return getInt(prompt, minValue, maxValue);
+            return getInt(options, minValue, maxValue);
         }
     }
 
@@ -149,7 +157,7 @@ public class Input {
     }
 
     public static String getFullName() {
-        return formatFullName(getString("Insert the name your name"));
+        return formatFullName(getString("Insert your name"));
     }
 
     public static boolean isUsernameValid(String username) {
@@ -173,12 +181,28 @@ public class Input {
             String name = getFullName();
 //            String email = getString("Insert your email");
             String email = getEmail();
-            String birthDate = getString("Insert your birthdate");
+            String birthDate = getBirthDate();
 
-            Account.registerAccount(username, password, name, email, birthDate, "15/12/2022");
+
+            Account.registerAccount(username, password, name, email, birthDate);
         }
         else {
-            System.out.println("You have to log out before attempting to create an account");
+            Twitter.printFramedMessage("You have to log out before attempting to create an account");
+        }
+    }
+
+    private static String getBirthDate() {
+        String birthDateInput = getString("Insert a valid birthday in the format dd/mm/yyyy");
+        if (Time.isValidDate(birthDateInput)) {
+            String formattedBirthDate = Time.convertDateFormat(birthDateInput);
+            if (Time.getAge(formattedBirthDate) > 13) {
+                return formattedBirthDate;
+            } else {
+                Twitter.printFramedMessage("You must be at least 13 years old to create an account :(");
+                return getBirthDate();
+            }
+        } else {
+            return getBirthDate();
         }
     }
 
@@ -189,8 +213,7 @@ public class Input {
         }
         var tweet = getValidatedTweetString();
         // TODO format date properly
-        var postDate = getString("Insert your local time");
-        Tweet.postTweet(tweet, postDate, loggedAccount);
+        Tweet.postTweet(tweet, Time.getCurrentTime(), loggedAccount);
     }
 
     private static String getValidatedTweetString() {
@@ -220,6 +243,7 @@ public class Input {
         if (isEmailValid(email)) {
             return email;
         }
+        Twitter.printFramedMessage("Invalid input! Insert an email in the format such as: username@domain.com");
         return getEmail();
     }
 

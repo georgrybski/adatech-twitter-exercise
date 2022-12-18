@@ -2,7 +2,8 @@ package br.com.ada.georg.twitter;
 
 public class Main {
     public static void main(String[] args) {
-
+        Account.registerAccount("admin", "admin",
+                "Admin", "admin@twitter.com", Time.getCurrentDate());
         boolean run = true;
         Account loggedAccount = null;
 
@@ -13,9 +14,7 @@ public class Main {
             if (loggedAccount != null) {
                 boolean isAdmin = loggedAccount.getUsername().equalsIgnoreCase("admin");
                 if (isAdmin) {
-                    Twitter.printAdminOptions();
-                    switch (Input.getInt("0-Exit 1-Create account 2-View account info 3-View all profiles 4-view all tweets 5-log out",
-                            0, 10)) {
+                    switch (Twitter.getAdminMenuInput()) {
 
                         // Create account
                         case 1:
@@ -46,19 +45,21 @@ public class Main {
                     }
                 }
                 else {
-                    Twitter.printUserOptions();
-                    switch (Input.getInt("Insert a ",
-                            0, 10)) {
+                    switch (Twitter.getUserMenuInput()) {
 
-                        // Exit application
-                        case (9):
-                            run = false;
-                            Twitter.printGoodbyeMessage();
+                        // Post Tweet
+                        case (1):
+                            Input.postTweet(loggedAccount);
                             break;
 
-                        // Log out
-                        case (8):
-                            loggedAccount = Account.logOut(loggedAccount);
+                        // Print all tweets
+                        case (2):
+                            Twitter.printAllTweets();
+                            break;
+
+                        // Print tweets by logged user
+                        case (3):
+                            Twitter.printTweetsByAccount(loggedAccount);
                             break;
 
                         // Print all registered accounts
@@ -81,34 +82,27 @@ public class Main {
                             Account.printAllAccounts(loggedAccount, loggedAccount.getFollowerList());
                             break;
 
-                        // Post Tweet
-                        case (1):
-                            Input.postTweet(loggedAccount);
+                        // Exit application
+                        case (8):
+                            loggedAccount = Account.logOut(loggedAccount);
                             break;
 
-                        // Print tweets by logged user
-                        case (3):
-                            Twitter.printTweetsByAccount(loggedAccount);
+                        // Log out
+                        case (9):
+                            run = false;
+                            Twitter.printGoodbyeMessage();
                             break;
 
-                        // Print all tweets
-                        case (2):
-                            Twitter.printAllTweets();
-                            break;
                     }
                 }
             }
 
             if (loggedAccount == null) {
-                Twitter.printGuestOptions();
-                switch (Input.getInt("",
-                        0, 10)) {
+                switch (Twitter.getGuestMenuInput()) {
 
-                    // TODO: add a "goodbye" method
-                    // Exit application
-                    case (3):
-                        run = false;
-                        Twitter.printGoodbyeMessage();
+                    // Log in
+                    case (1):
+                        loggedAccount = Input.logIn(loggedAccount);
                         break;
 
                     // Create account
@@ -116,9 +110,10 @@ public class Main {
                         Input.registerAccount(loggedAccount);
                         break;
 
-                    // Log in
-                    case (1):
-                        loggedAccount = Input.logIn(loggedAccount);
+                    // Exit application
+                    case (3):
+                        run = false;
+                        Twitter.printGoodbyeMessage();
                         break;
                 }
             }

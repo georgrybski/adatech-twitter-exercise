@@ -25,12 +25,12 @@ public class Account {
         this.creationDate = creationDate;
     }
 
-    public static void registerAccount(String username, String password, String name, String email, String birthDate, String currentDate) {
+    public static void registerAccount(String username, String password, String name, String email, String birthDate) {
         var isListFull = accountCount == accountList.length-1;
         if(isListFull) {
             accountList = ArrayTools.returnExpandedArray(accountList);
         }
-        accountList[accountCount++] = new Account(username, password, currentDate,  new User(name, email, birthDate));
+        accountList[accountCount++] = new Account(username, password, Time.getCurrentDate(),  new User(name, email, birthDate));
     }
 
     @Override
