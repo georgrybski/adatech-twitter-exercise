@@ -263,20 +263,21 @@ public class Twitter {
                 return;
             } else {
                 printFormattedTweet((Tweet) tweet);
+                System.out.println();
             }
         }
     }
 
     public static void printTweetsByAccount(Account loggedAccount) {
         if (loggedAccount == null) {
-            System.out.println("You need to be logged in to check tweets");
+            printFramedMessage("You need to be logged in to check tweets");
         }
-
         for (Object tweet : loggedAccount.getTweets()) {
             if (tweet == null) {
                 return;
             }
             Twitter.printFormattedTweet((Tweet) tweet);
+            System.out.println();
         }
     }
 

@@ -18,7 +18,7 @@ public class Input {
             var password = getString("Insert your password");
             AccountChecker logInCheck = Account.logIn(username, password);
             if (logInCheck.exists()) {
-                System.out.println("You have successfully logged in as " + logInCheck.getAccount().getUsername());
+                Twitter.printFramedMessage("You have successfully logged in as " + logInCheck.getAccount().getUsername());
                 return logInCheck.getAccount();
             } else {
                 switch (getInt("Username and/or password incorrect, press 0 to go back to the menu or 1 to try again", 0, 1)) {
@@ -31,7 +31,7 @@ public class Input {
             }
         }
         else {
-            System.out.println("You are already logged in!");
+            Twitter.printFramedMessage("You are already logged in!");
             switch (getInt("Press 1 to log or 0 to go back to the menu", 0,1)) {
                 case 0:
                     return loggedAccount;
@@ -44,16 +44,16 @@ public class Input {
 
     public static void follow (Account loggedAccount) {
         if (loggedAccount == null) {
-            System.out.println("You have to be logged in to follow someone.");
+            Twitter.printFramedMessage("You have to be logged in to follow someone.");
             return;
         }
         var usernameToFollow = getString("Insert the username you would like to follow");
         if (usernameToFollow.equalsIgnoreCase(loggedAccount.getUsername())){
-            System.out.println("You can't follow yourself");
+            Twitter.printFramedMessage("You can't follow yourself");
             return;
         }
         Account.follow(loggedAccount, usernameToFollow);
-        System.out.println("You are now following \"" + usernameToFollow + "\"");
+        Twitter.printFramedMessage("You are now following \"" + usernameToFollow + "\"");
 }
 
 
@@ -77,7 +77,9 @@ public class Input {
 
     private static Object get(String expectedInputType, String prompt) {
         Object input;
-        Twitter.printFramedMessage(prompt);
+        if(!prompt.isBlank()){
+            Twitter.printFramedMessage(prompt);
+        }
         input = get(expectedInputType);
         if (input != null) {
             return input;
@@ -98,11 +100,12 @@ public class Input {
 
     public static int getInt(String prompt, int minValue, int maxValue) {
         int input;
+
         try {
             input = (int) get("int", prompt);
         }
         catch (ClassCastException e) {
-            System.out.println("Invalid input!");
+            Twitter.printFramedMessage("Invalid input!");
             return getInt(prompt, minValue, maxValue);
         }
         boolean inputInRange = (input >= minValue && input <= maxValue);
@@ -117,13 +120,13 @@ public class Input {
     public static String getUsername() {
         var username = (String) getString("Insert your desired username");
         if (!isUsernameValid(username)){
-            System.out.println("Usernames must have between 4 and 15 characters and " +
+            Twitter.printFramedMessage("Usernames must have between 4 and 15 characters and " +
                                "contain only letters A-Z, numbers 0-9 or underscores");
             return getUsername();
         }
         AccountChecker usernameFree = AccountChecker.accountExists(username, Account.getAccountList());
         if (usernameFree.exists()) {
-            System.out.println("That username is already taken");
+            Twitter.printFramedMessage("That username is already taken");
             return getUsername();
         }
         else {

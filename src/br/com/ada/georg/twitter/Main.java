@@ -47,8 +47,7 @@ public class Main {
                 }
                 else {
                     Twitter.printUserOptions();
-                    switch (Input.getInt("0-Exit 3-Log out 4- print all account info, 5-follow 6-printFollowed " +
-                                    "7-printFollowing 8-Post Tweet 9-View my tweets 10-View All tweets",
+                    switch (Input.getInt("Insert a ",
                             0, 10)) {
 
                         // Exit application
