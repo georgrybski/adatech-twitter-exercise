@@ -34,6 +34,7 @@ public class Twitter {
         return getMenuInput(ADMIN_MENU_OPTIONS, ADMIN_MENU_MIN_INPUT, ADMIN_MENU_MAX_INPUT);
     }
 
+    //TODO: refactor method
     private static void printFormattedTweet(Tweet tweet) {
         int lineLength = 70;
         System.out.print(" ".repeat(6));
@@ -51,11 +52,15 @@ public class Twitter {
         printFrameLine(lineLength, "+", "-");
     }
 
-
+    //TODO: refactor method
     public static void printFormattedProfile(Account account, Account loggedAccount) {
+
+        // Check if account being printed is admin
         if (account.getUsername().equalsIgnoreCase("admin")) {
             return;
         }
+
+        // Print info available to all users
         int lineLength = 70;
         System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
@@ -71,16 +76,26 @@ public class Twitter {
         printFrameLine(lineLength, "|", " ");
         System.out.print(" ".repeat(6));
         printMultipurposeLine(returnFollowerInfo(account), lineLength);
+
+        // Add restricted info if user is logged as admin:
         if (loggedAccount.getUsername().equalsIgnoreCase("admin")) {
             System.out.print(" ".repeat(6));
             printFrameLine(lineLength, "|", " ");
             System.out.print(" ".repeat(6));
             printMultipurposeLine(returnEmailInfo(account), lineLength);
             System.out.print(" ".repeat(6));
+            printMultipurposeLine(returnAgeInfo(account), lineLength);
+            System.out.print(" ".repeat(6));
             printMultipurposeLine(returnBirthDateInfo(account), lineLength);
         }
+
+        // Print the bottom of the box
         System.out.print(" ".repeat(6));
         printFrameLine(lineLength, "+", "-");
+    }
+
+    private static String returnAgeInfo(Account account) {
+        return "Age: " + Time.getAge(account.getUser().getBirthDate()) + " years old";
     }
 
     private static String returnEmailInfo(Account account) {

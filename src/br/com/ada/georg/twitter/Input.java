@@ -47,10 +47,6 @@ public class Input {
     }
 
     public static void follow(Account loggedAccount) {
-//        if (loggedAccount == null) {
-//            Twitter.printFramedMessage("You have to be logged in to follow someone.");
-//            return;
-//        }
         var usernameToFollow = getString("Insert the username you would like to follow");
         if (usernameToFollow.equalsIgnoreCase(loggedAccount.getUsername())) {
             Twitter.printFramedMessage("You can't follow yourself");
