@@ -1,6 +1,10 @@
 package br.com.ada.georg.twitter;
 
 public class ArrayTools {
+
+    private ArrayTools() {
+    }
+
     public static Object[] returnExpandedArray(Object[] oldArray) {
         var newArray = new Object[oldArray.length+50];
         transferFromTo(oldArray,newArray);
@@ -16,4 +20,19 @@ public class ArrayTools {
             }
         }
     }
+
+    public static boolean isArrayFull(Object[] array, int arrayCounter) {
+         return arrayCounter == array.length-1;
+    }
+
+    public static Object[] expandArrayIfNecessary(Object[] array, int arrayCounter) {
+        if (isArrayFull(array, arrayCounter)) {
+            return returnExpandedArray(array);
+        }
+        else {
+            return array;
+        }
+    }
+
+
 }

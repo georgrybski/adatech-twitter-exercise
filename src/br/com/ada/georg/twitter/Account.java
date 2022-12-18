@@ -25,50 +25,40 @@ public class Account {
         this.creationDate = creationDate;
     }
 
-    public static void registerAccount(String username, String password, String name, String email, String birthDate, String currentDate) {
+    public static void registerAccount(String username, String password, String name, String email, String birthDate) {
         var isListFull = accountCount == accountList.length-1;
         if(isListFull) {
             accountList = ArrayTools.returnExpandedArray(accountList);
         }
-        accountList[accountCount++] = new Account(username, password, currentDate,  new User(name, email, birthDate));
+        accountList[accountCount++] = new Account(username, password, Time.getCurrentDate(),  new User(name, email, birthDate));
     }
 
-    @Override
-    public String toString() {
-        return "Account{" +
-                "username='" + username + '\'' +
-                ", password='" + password + '\'' +
-                user.toString() +
-                ", creationDate='" + creationDate + '\'' +
-                ", tweetCount=" + tweetCount +
-                ", followerCount=" + followerCount +
-                ", followCount=" + followCount +
-                '}';
-    }
-
-    public static void printAllAccounts(Object[] list) {
+    public static void printAllAccounts(Account loggedAccount, Object[] list) {
+        if(loggedAccount == null){
+            return;
+        }
         for (Object account : list) {
             if (account != null) {
-                System.out.println(((Account) account).toString());
+                Twitter.printFormattedProfile(((Account)account), loggedAccount);
             }
         }
     }
 
-    public static void follow(Account follower, String  followedUsername) {
+    public static boolean follow(Account follower, String  followedUsername) {
 
         // Check if an account with followedUsername exists
         AccountChecker followedAccountCheck;
         followedAccountCheck = AccountChecker.accountExists(followedUsername, Account.accountList);
         if(!followedAccountCheck.exists()){
-            System.out.println("There is no account with the username \"" + followedUsername + "\"");
-            return;
+            Twitter.printFramedMessage("There is no account with the username \"" + "@" + followedUsername + "\"");
+            return false;
         }
 
         // Check if follower is already following the account that has followedUsername
         AccountChecker followedInFollowList = AccountChecker.accountExists(followedUsername, follower.followedList);
         if (followedInFollowList.exists()){
-            System.out.println("You are already following this account.");
-            return;
+            Twitter.printFramedMessage("You are already following \"" + "@" + followedUsername + "\"");
+            return false;
         }
 
         //Check if the involved arrays are full, and expand them if necessary
@@ -90,6 +80,7 @@ public class Account {
 
         // Add follower to followed's follower list
         followedAccountCheck.getAccount().followerList[followedAccountCheck.getAccount().followerCount++] = follower;
+        return true;
     }
 
     public static AccountChecker logIn (String username, String password){
@@ -103,28 +94,27 @@ public class Account {
     }
 
     public static Account logOut(Account loggedAccount) {
-        if (loggedAccount!=null){
-            System.out.println("You have successfully logged out");
-        } else {
-            System.out.println("You are already logged out");
+        if (loggedAccount != null) {
+            Twitter.printFramedMessage("You have successfully logged out");
         }
         return null;
+    }
+
+    public static void postTweetInAccountTweetList(Account author, Tweet tweet) {
+        author.tweets = ArrayTools.expandArrayIfNecessary(author.tweets, author.tweetCount);
+        author.tweets[author.tweetCount++] = tweet;
     }
 
     public static Object[] getAccountList() {
         return accountList;
     }
 
-    public static int getAccountCount() {
-        return accountCount;
-    }
-
     public String getUsername() {
         return username;
     }
 
-    public String getPassword() {
-        return password;
+    public String getHandle() {
+        return "@" + username;
     }
 
     public User getUser() {
@@ -157,53 +147,5 @@ public class Account {
 
     public int getFollowCount() {
         return followCount;
-    }
-
-    public static void setAccountList(Object[] accountList) {
-        Account.accountList = accountList;
-    }
-
-    public static void setAccountCount(int accountCount) {
-        Account.accountCount = accountCount;
-    }
-
-    public void setUsername(String username) {
-        this.username = username;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setUser(User user) {
-        this.user = user;
-    }
-
-    public void setCreationDate(String creationDate) {
-        this.creationDate = creationDate;
-    }
-
-    public void setTweets(Object[] tweets) {
-        this.tweets = tweets;
-    }
-
-    public void setTweetCount(int tweetCount) {
-        this.tweetCount = tweetCount;
-    }
-
-    public void setFollowedList(Object[] followedList) {
-        this.followedList = followedList;
-    }
-
-    public void setFollowerCount(int followerCount) {
-        this.followerCount = followerCount;
-    }
-
-    public void setFollowerList(Object[] followerList) {
-        this.followerList = followerList;
-    }
-
-    public void setFollowCount(int followCount) {
-        this.followCount = followCount;
     }
 }
