@@ -64,6 +64,10 @@ public class Input {
             Twitter.printFramedMessage("No profiles match your search :(");
             return;
         }
+        // Removing found incidence related to admin
+        if ("admin".contains(username.toLowerCase())) {
+            found --;
+        }
         for (int searched = 0; searched < Account.getAccountList().length; searched++) {
             if (Account.getAccountList()[searched] == null) {
                 if (found == 0) {
@@ -80,6 +84,7 @@ public class Input {
                 if (found > 0 && searched == Account.getAccountList().length -1) {
                     String results = found > 1? " results." : " result";
                     Twitter.printFramedMessage("^ \"" + username + "\" search yielded " + found + results + " ^");
+                    return;
                 }
             }
         }
