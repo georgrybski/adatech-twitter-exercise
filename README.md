@@ -1,4 +1,7 @@
 # Simple Twitter Exercise
+
+[Ler em português](README.pt-br.md)
+
  This project is a simple twitter-like application,
  implemented in Java without a database.
  It was developed as part of the first module
