@@ -1,6 +1,6 @@
-# Exercício simples - Twitter
+[English](README.md) | [Português](README.pt-br.md)
 
-[Read in english](README.md)
+# Exercício simples - Twitter
 
 Este projeto é um programa simples que busca emular algumas das funçoes do Twitter,
 usando apenas Java, sem um banco de dados. O exercício foi proposto como parte do primeiro módulo da trilha Back-End do programa 
